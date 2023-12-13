@@ -93,34 +93,6 @@ public class AnagraficheController {
     }
 
 
-    /*
-        Controller tabella: td_specializzazione_attivita
-     */
-    @GetMapping("/lista_TD_SPECIALIZZAZIONE_ATTIVITA") // Postman request: "Lista Specializzazione Attività From Tabella"
-    public ResponseEntity<List<TdSpecializzazioneAttivitaEntity>> getLista_TD_SPECIALIZZAZIONE_ATTIVITA() {
-
-        List<TdSpecializzazioneAttivitaEntity> lista_TdSpecializzazioneAttivitaEntity = anagraficheService.getLista_TD_SPECIALIZZAZIONE_ATTIVITA();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(lista_TdSpecializzazioneAttivitaEntity);
-    }
-    @GetMapping("/lista_TD_SPECIALIZZAZIONE_ATTIVITA_Attive") // Postman request: "Lista Specializzazione Attività Attive From Tabella"
-    public ResponseEntity<List<TdSpecializzazioneAttivitaEntity>> getLista_TD_SPECIALIZZAZIONE_ATTIVITA_Attive() {
-
-        List<TdSpecializzazioneAttivitaEntity> lista_TdSpecializzazioneAttivitaEntity = anagraficheService.getLista_TD_SPECIALIZZAZIONE_ATTIVITA_Attive();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(lista_TdSpecializzazioneAttivitaEntity);
-    }
-    @GetMapping("/lista_TD_SPECIALIZZAZIONE_ATTIVITA_Attive_by_ID_MACRO_ATTIVITA") // Postman request: "Lista Specializzazione Attività Attive by ID_MACRO_ATTIVITA From Tabella"
-    public ResponseEntity<List<TdSpecializzazioneAttivitaEntity>> getLista_TD_SPECIALIZZAZIONE_ATTIVITA_Attive_by_ID_MACRO_ATTIVITA(@RequestParam("idMacroAttivita") Integer idMacroAttivita) {
-
-        List<TdSpecializzazioneAttivitaEntity> lista_TdSpecializzazioneAttivitaEntity = anagraficheService.getLista_TD_SPECIALIZZAZIONE_ATTIVITA_Attive_by_ID_MACRO_ATTIVITA(idMacroAttivita);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(lista_TdSpecializzazioneAttivitaEntity);
-    }
-
 
     /*
         Controller tabella: td_tipo_documento

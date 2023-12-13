@@ -22,7 +22,7 @@ public class AnagraficheService {
     private final TdAttivitaRepository tdAttivitaRepository;
     private final TdAmbitoAttivitaRepository tdAmbitoAttivitaRepository;
     private final TdMacroAttivitaRepository tdMacroAttivitaRepository;
-    private final TdSpecializzazioneAttivitaRepository tdSpecializzazioneAttivitaRepository;
+    //private final TdSpecializzazioneAttivitaRepository tdSpecializzazioneAttivitaRepository;
     private final TdTipoDocumentoRepository tdTipoDocumentoRepository;
     private final TdApplicativoRepository tdApplicativoRepository;
     private final TdModoRegistrazioneDocumentoProtocolloRepository tdModoRegistrazioneDocumentoProtocolloRepository;
@@ -188,70 +188,6 @@ public class AnagraficheService {
         return tdMacroAttivitaEntity;
     }
 
-    /*
-        Service tabella: td_specializzazione_attivita
-     */
-    public List<TdSpecializzazioneAttivitaEntity> getLista_TD_SPECIALIZZAZIONE_ATTIVITA() {
-        /*
-            Ritorna la lista dell'anagrafica TD_SPECIALIZZAZIONE_ATTIVITA;
-         */
-        Optional<List<TdSpecializzazioneAttivitaEntity>> op_ListaTdSpecializzazioneAttivita;
-        List<TdSpecializzazioneAttivitaEntity> listaTdSpecializzazioneAttivitaEntity;
-
-        op_ListaTdSpecializzazioneAttivita = tdSpecializzazioneAttivitaRepository.getLista_TD_SPECIALIZZAZIONE_ATTIVITA();
-
-        if (op_ListaTdSpecializzazioneAttivita.isEmpty())
-            listaTdSpecializzazioneAttivitaEntity = new ArrayList();
-        else
-            listaTdSpecializzazioneAttivitaEntity = op_ListaTdSpecializzazioneAttivita.get();
-
-        return listaTdSpecializzazioneAttivitaEntity;
-
-    }
-    public List<TdSpecializzazioneAttivitaEntity> getLista_TD_SPECIALIZZAZIONE_ATTIVITA_Attive() {
-        /*
-            Ritorna la lista dell'anagrafica TD_SPECIALIZZAZIONE_ATTIVITA attive(flag_attiva = 'Y');
-         */
-        Optional<List<TdSpecializzazioneAttivitaEntity>> op_ListaTdSpecializzazioneAttivita;
-        List<TdSpecializzazioneAttivitaEntity> listaTdSpecializzazioneAttivitaEntity;
-
-        op_ListaTdSpecializzazioneAttivita = tdSpecializzazioneAttivitaRepository.getLista_TD_SPECIALIZZAZIONE_ATTIVITA_Attive();
-
-        if (op_ListaTdSpecializzazioneAttivita.isEmpty())
-            listaTdSpecializzazioneAttivitaEntity = new ArrayList();
-        else
-            listaTdSpecializzazioneAttivitaEntity = op_ListaTdSpecializzazioneAttivita.get();
-
-        return listaTdSpecializzazioneAttivitaEntity;
-
-    }
-    public List<TdSpecializzazioneAttivitaEntity> getLista_TD_SPECIALIZZAZIONE_ATTIVITA_Attive_by_ID_MACRO_ATTIVITA(Integer idMacroAttivita) {
-        /*
-            Ritorna la lista dell'anagrafica TD_MACRO_ATTIVITA attive associate ad una data Macro Attivita
-         */
-        Optional<List<TdSpecializzazioneAttivitaEntity>> op_TdSpecializzazioneAttivitaEntity;
-        List<TdSpecializzazioneAttivitaEntity> listaTdSpecializzazioneAttivitaEntity;
-
-        op_TdSpecializzazioneAttivitaEntity = tdSpecializzazioneAttivitaRepository.getLista_TD_SPECIALIZZAZIONE_ATTIVITA_Attive_by_ID_MACRO_ATTIVITA(idMacroAttivita);
-
-        if (op_TdSpecializzazioneAttivitaEntity.isEmpty())
-            listaTdSpecializzazioneAttivitaEntity = new ArrayList();
-        else
-            listaTdSpecializzazioneAttivitaEntity = op_TdSpecializzazioneAttivitaEntity.get();
-
-        return listaTdSpecializzazioneAttivitaEntity;
-    }
-    public TdSpecializzazioneAttivitaEntity addSpecializzazioneAttivita(String newSpecializzazioneAttivita, Integer idMacroAttivita) {
-        TdSpecializzazioneAttivitaEntity tdSpecializzazioneAttivitaEntity = new TdSpecializzazioneAttivitaEntity();
-
-        tdSpecializzazioneAttivitaEntity.setNome_specializzazione_attivita(newSpecializzazioneAttivita);
-        tdSpecializzazioneAttivitaEntity.setId_macro_attivita(idMacroAttivita);
-        tdSpecializzazioneAttivitaEntity.setFlag_attivo("Y");
-
-        tdSpecializzazioneAttivitaRepository.save(tdSpecializzazioneAttivitaEntity);
-
-        return tdSpecializzazioneAttivitaEntity;
-    }
 
     /*
         Service tabella: td_tipo_documento

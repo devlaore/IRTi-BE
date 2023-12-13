@@ -67,18 +67,6 @@ public class DDSService {
             tfQuestionarioEntity.setId_macro_attivita(tdMacroAttivitaEntity.getId_macro_attivita());
         }
 
-        // ID_SPECIALIZZAZIONE_ATTIVITA --> NON Obbligatorio
-        if (questionarioModelRequest.getSpecializzazioneAttivitaAltro() == null) {
-            if(questionarioModelRequest.getTdSpecializzazioneAttivitaEntity() != null) {
-                tfQuestionarioEntity.setId_specializzazione_attivita(questionarioModelRequest.getTdSpecializzazioneAttivitaEntity().getId_specializzazione_attivita());
-            } else {
-                tfQuestionarioEntity.setId_specializzazione_attivita(null);
-            }
-        } else {
-            TdSpecializzazioneAttivitaEntity tdSpecializzazioneAttivitaEntity = anagraficheService.addSpecializzazioneAttivita(questionarioModelRequest.getSpecializzazioneAttivitaAltro(), tfQuestionarioEntity.getId_macro_attivita());
-            tfQuestionarioEntity.setId_specializzazione_attivita(tdSpecializzazioneAttivitaEntity.getId_specializzazione_attivita());
-        }
-
         // ANNOTAZIONI_GENERALI --> NON Obbligatorio
         tfQuestionarioEntity.setAnnotazioni_generali(questionarioModelRequest.getAnnotazioniGenerali());
 
@@ -233,8 +221,8 @@ public class DDSService {
         tfQuestionarioEntity.setTelefono_compilante(questionarioModelRequest.getTelefonoCompilante());
 
         // ID_SERVIZIO --> Obbligatorio
-        if(questionarioModelRequest.getServizioEntity() != null) {
-            tfQuestionarioEntity.setId_servizio(questionarioModelRequest.getServizioEntity().getId_servizio());
+        if(questionarioModelRequest.getTdServizioEntity() != null) {
+            tfQuestionarioEntity.setId_servizio(questionarioModelRequest.getTdServizioEntity().getId_servizio());
         } else {
             tfQuestionarioEntity.setId_servizio(null);
         }

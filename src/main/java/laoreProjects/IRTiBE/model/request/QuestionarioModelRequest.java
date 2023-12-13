@@ -22,8 +22,6 @@ public class QuestionarioModelRequest {
     private String ambitoAttivitaAltro;
     private TdMacroAttivitaEntity tdMacroAttivitaEntity;
     private String macroAttivitaAltro;
-    private TdSpecializzazioneAttivitaEntity tdSpecializzazioneAttivitaEntity;
-    private String specializzazioneAttivitaAltro;
     private String annotazioniGenerali;
     private List<TdTipoDocumentoEntity> listaTdTipoDocumentoEntity;
     private String tipoDocumentoAltro;
@@ -59,7 +57,7 @@ public class QuestionarioModelRequest {
     private String nominativoCompilante;
     private String emailCompilante;
     private String telefonoCompilante;
-    private TdServizioEntity servizioEntity;
+    private TdServizioEntity tdServizioEntity;
     private String annotazioniCompilanteQuestionario;
     private String dataCompilazioneQuestionario;
 
