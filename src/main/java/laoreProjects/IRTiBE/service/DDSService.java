@@ -71,75 +71,28 @@ public class DDSService {
         tfQuestionarioEntity.setAnnotazioni_generali(questionarioModelRequest.getAnnotazioniGenerali());
 
         // ID_TIPO_DOCUMENTO --> Obbligatorio
-        if (questionarioModelRequest.getTipoDocumentoAltro() == null) {
-            Integer next_ID_TIPO_DOCUMENTO_SM = salva_TF_SM_TIPO_DOCUMENTO(questionarioModelRequest.getListaTdTipoDocumentoEntity());
-            tfQuestionarioEntity.setId_tipo_documento_sm(next_ID_TIPO_DOCUMENTO_SM);
-        } else {
-            // Rimuovo dalla lista dei Tipo Documento il Tipo Documento "Altro"
-            questionarioModelRequest.getListaTdTipoDocumentoEntity().removeIf( tdTipoDocumento -> (tdTipoDocumento.getId_tipo_documento() == 9999));
-
-            TdTipoDocumentoEntity tdTipoDocumentoEntity = anagraficheService.addTipoDocumento(questionarioModelRequest.getTipoDocumentoAltro());
-            questionarioModelRequest.getListaTdTipoDocumentoEntity().add(tdTipoDocumentoEntity);
-            Integer next_ID_TIPO_DOCUMENTO_SM = salva_TF_SM_TIPO_DOCUMENTO(questionarioModelRequest.getListaTdTipoDocumentoEntity());
-            tfQuestionarioEntity.setId_tipo_documento_sm(next_ID_TIPO_DOCUMENTO_SM);
-        }
+        Integer next_ID_TIPO_DOCUMENTO_SM = salva_TF_SM_TIPO_DOCUMENTO(questionarioModelRequest.getListaTdTipoDocumentoEntity(), questionarioModelRequest.getTipoDocumentoAltro());
+        tfQuestionarioEntity.setId_tipo_documento_sm(next_ID_TIPO_DOCUMENTO_SM);
 
         // FLAG_DOCUMENTO_GESTITO_DA_APPLICATIVO --> Obbligatorio
         tfQuestionarioEntity.setFlag_applicativo(questionarioModelRequest.getFlag_applicativo());
 
         // ID_APPLICATIVO --> Obbligatorio se FLAG_DOCUMENTO_GESTITO_DA_APPLICATIVO scelto = "SI"
-        if (questionarioModelRequest.getFlag_applicativo() != null && questionarioModelRequest.getFlag_applicativo().equals("Si")) {
-            if (questionarioModelRequest.getApplicativoAltro() == null) {
-                Integer next_ID_APPLICATIVO_SM = salva_TF_SM_APPLICATIVO(questionarioModelRequest.getListaTdApplicativoEntity());
-                tfQuestionarioEntity.setId_applicativo_sm(next_ID_APPLICATIVO_SM);
-            } else {
-                // Rimuovo dalla lista degli applicativi l'applicativo "Altro"
-                questionarioModelRequest.getListaTdApplicativoEntity().removeIf( tdApplicativo -> (tdApplicativo.getId_applicativo() == 99999));
-
-                TdApplicativoEntity tdApplicativoEntity = anagraficheService.addApplicativo(questionarioModelRequest.getApplicativoAltro());
-                questionarioModelRequest.getListaTdApplicativoEntity().add(tdApplicativoEntity);
-                Integer next_ID_APPLICATIVO_SM = salva_TF_SM_APPLICATIVO(questionarioModelRequest.getListaTdApplicativoEntity());
-                tfQuestionarioEntity.setId_applicativo_sm(next_ID_APPLICATIVO_SM);
-            }
-        } else {
-            tfQuestionarioEntity.setId_applicativo_sm(null);
-        }
+        Integer next_ID_APPLICATIVO_SM = salva_TF_SM_APPLICATIVO(questionarioModelRequest.getListaTdApplicativoEntity(), questionarioModelRequest.getApplicativoAltro());
+        tfQuestionarioEntity.setId_applicativo_sm(next_ID_APPLICATIVO_SM);
 
         // FLAG_REGISTRAZIONE_DOCUMENTO_A_PROTOCOLLO --> Obbligatorio
         tfQuestionarioEntity.setFlag_modo_registrazione_documento_protocollo(questionarioModelRequest.getFlagModoRegistrazioneDocumentoProtocollo());
 
         // ID_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO --> Obbligatorio se FLAG_REGISTRAZIONE_DOCUMENTO_A_PROTOCOLLO scelto = "In parte" ==> da verificare
-        if (questionarioModelRequest.getFlagModoRegistrazioneDocumentoProtocollo() != null && questionarioModelRequest.getFlagModoRegistrazioneDocumentoProtocollo().equals("In parte")) {
-            if (questionarioModelRequest.getModoRegistrazioneDocumentoProtocolloAltro() == null) {
-                Integer next_ID_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO_SM = salva_TF_SM_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO(questionarioModelRequest.getListaTdModoRegistrazioneDocumentoProtocolloEntity());
-                tfQuestionarioEntity.setId_modo_registrazione_documento_protocollo_sm(next_ID_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO_SM);
-
-            } else {
-                // Rimuovo dalla lista dei Modo Registrazione Documento il Modo Registrazione Documento "Altro"
-                questionarioModelRequest.getListaTdModoRegistrazioneDocumentoProtocolloEntity().removeIf( tdModoRegistrazioneDocumentoProtocollo -> (tdModoRegistrazioneDocumentoProtocollo.getId_modo_registrazione_documento_protocollo() == 9999));
-
-                TdModoRegistrazioneDocumentoProtocolloEntity tdModoRegistrazioneDocumentoProtocolloEntity = anagraficheService.addModoRegistrazioneDocumentoProtocollo(questionarioModelRequest.getModoRegistrazioneDocumentoProtocolloAltro());
-                questionarioModelRequest.getListaTdModoRegistrazioneDocumentoProtocolloEntity().add(tdModoRegistrazioneDocumentoProtocolloEntity);
-                Integer next_ID_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO_SM = salva_TF_SM_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO(questionarioModelRequest.getListaTdModoRegistrazioneDocumentoProtocolloEntity());
-                tfQuestionarioEntity.setId_modo_registrazione_documento_protocollo_sm(next_ID_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO_SM);
-            }
-        } else {
-            tfQuestionarioEntity.setId_modo_registrazione_documento_protocollo_sm(null);
-        }
+        Integer next_ID_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO_SM = salva_TF_SM_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO(questionarioModelRequest.getListaTdModoRegistrazioneDocumentoProtocolloEntity(), questionarioModelRequest.getModoRegistrazioneDocumentoProtocolloAltro());
+        tfQuestionarioEntity.setId_modo_registrazione_documento_protocollo_sm(next_ID_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO_SM);
 
         // ID_TITOLO --> Obbligatorio
-        if(questionarioModelRequest.getTdTitoloEntity() != null) {
-            tfQuestionarioEntity.setId_titolo(questionarioModelRequest.getTdTitoloEntity().getId_titolo());
-        } else {
-            tfQuestionarioEntity.setId_titolo(null);
-        }
+        tfQuestionarioEntity.setId_titolo(questionarioModelRequest.getTdTitoloEntity().getId_titolo());
 
         // ID_CLASSE --> Obbligatorio
-        if(questionarioModelRequest.getTdClasseEntity() != null) {
-            tfQuestionarioEntity.setId_classe(questionarioModelRequest.getTdClasseEntity().getId_classe());
-        } else {
-            tfQuestionarioEntity.setId_classe(null);
-        }
+        tfQuestionarioEntity.setId_classe(questionarioModelRequest.getTdClasseEntity().getId_classe());
 
 
 
@@ -147,33 +100,15 @@ public class DDSService {
         Gestione campi del form: O R G A N I Z Z A Z I O N E   D O C U M E N T O
 */
         // ID_MODO_GESTIONE_DOCUMENTO --> Obbligatorio
-        if(questionarioModelRequest.getTdModoGestioneDocumentoEntity() != null) {
-            tfQuestionarioEntity.setId_modo_gestione_documento(questionarioModelRequest.getTdModoGestioneDocumentoEntity().getId_modo_gestione_documento());
-        } else {
-            tfQuestionarioEntity.setId_modo_gestione_documento(null);
-        }
+        tfQuestionarioEntity.setId_modo_gestione_documento(questionarioModelRequest.getTdModoGestioneDocumentoEntity().getId_modo_gestione_documento());
 
         // ID_MODO_ORGANIZZAZIONE_DOCUMENTO --> Obbligatorio
-        if(questionarioModelRequest.getListaTdModoOrganizzazioneDocumentoEntity() != null) {
-            Integer next_ID_MODO_ORGANIZZAZIONE_DOCUMENTO_SM = salva_TF_SM_MODO_ORGANIZZAZIONE_DOCUMENTO(questionarioModelRequest.getListaTdModoOrganizzazioneDocumentoEntity());
-            tfQuestionarioEntity.setId_modo_organizzazione_documento_sm(next_ID_MODO_ORGANIZZAZIONE_DOCUMENTO_SM);
-
-        } else {
-            tfQuestionarioEntity.setId_modo_organizzazione_documento_sm(null);
-        }
-
-
+        Integer next_ID_MODO_ORGANIZZAZIONE_DOCUMENTO_SM = salva_TF_SM_MODO_ORGANIZZAZIONE_DOCUMENTO(questionarioModelRequest.getListaTdModoOrganizzazioneDocumentoEntity());
+        tfQuestionarioEntity.setId_modo_organizzazione_documento_sm(next_ID_MODO_ORGANIZZAZIONE_DOCUMENTO_SM);
 
         // ID_CRITERIO_ORGANIZZAZIONE_DOCUMENTO --> Obbligatorio
-        if(questionarioModelRequest.getListaTdCriterioOrganizzazioneDocumentoEntity() != null) {
-            Integer next_ID_CRITERIO_ORGANIZZAZIONE_DOCUMENTO_SM = salva_TF_SM_CRITERIO_ORGANIZZAZIONE_DOCUMENTO(questionarioModelRequest.getListaTdCriterioOrganizzazioneDocumentoEntity());
-            tfQuestionarioEntity.setId_criterio_organizzazione_documento_sm(next_ID_CRITERIO_ORGANIZZAZIONE_DOCUMENTO_SM);
-
-        } else {
-            tfQuestionarioEntity.setId_criterio_organizzazione_documento_sm(null);
-        }
-
-
+        Integer next_ID_CRITERIO_ORGANIZZAZIONE_DOCUMENTO_SM = salva_TF_SM_CRITERIO_ORGANIZZAZIONE_DOCUMENTO(questionarioModelRequest.getListaTdCriterioOrganizzazioneDocumentoEntity());
+        tfQuestionarioEntity.setId_criterio_organizzazione_documento_sm(next_ID_CRITERIO_ORGANIZZAZIONE_DOCUMENTO_SM);
 
         // ANNOTAZIONI_ORGANIZZAZIONE_DOCUMENTO --> Non Obbligatorio
         tfQuestionarioEntity.setAnnotazioni_organizzazione_doc(questionarioModelRequest.getAnnotazioniOrganizzazioneDoc());
@@ -187,22 +122,8 @@ public class DDSService {
         tfQuestionarioEntity.setFlag_luogo_pubblicazione_documento(questionarioModelRequest.getFlagLuogoPubblicazioneDocumento());
 
         // ID_LUOGO_PUBBLICAZIONE_DOCUMENTO --> Obbligatorio se FLAG_DOCUMENTO_SOGGETTO_A_PUBBLICAZIONE scelto = "Si"
-        if (questionarioModelRequest.getFlagLuogoPubblicazioneDocumento() != null && questionarioModelRequest.getFlagLuogoPubblicazioneDocumento().equals("Si")) {
-            if (questionarioModelRequest.getLuogoPubblicazioneDocumentoAltro() == null) {
-                Integer next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO = salva_TF_SM_LUOGO_PUBBLICAZIONE_DOCUMENTO(questionarioModelRequest.getListaTdLuogoPubblicazioneDocumentoEntity());
-                tfQuestionarioEntity.setId_luogo_pubblicazione_documento_sm(next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO);
-            } else {
-                // Rimuovo dalla lista dei Luogo Pubblicazione Documento il Luogo Pubblicazione Documento "Altro"
-                questionarioModelRequest.getListaTdLuogoPubblicazioneDocumentoEntity().removeIf( tdLuogoPubblicazioneDocumento -> (tdLuogoPubblicazioneDocumento.getId_luogo_pubblicazione_documento() == 9999));
-
-                TdLuogoPubblicazioneDocumentoEntity tdLuogoPubblicazioneDocumentoEntity = anagraficheService.addLuogoPubblicazioneDocumenti(questionarioModelRequest.getLuogoPubblicazioneDocumentoAltro());
-                questionarioModelRequest.getListaTdLuogoPubblicazioneDocumentoEntity().add(tdLuogoPubblicazioneDocumentoEntity);
-                Integer next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO = salva_TF_SM_LUOGO_PUBBLICAZIONE_DOCUMENTO(questionarioModelRequest.getListaTdLuogoPubblicazioneDocumentoEntity());
-                tfQuestionarioEntity.setId_luogo_pubblicazione_documento_sm(next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO);
-            }
-        } else {
-            tfQuestionarioEntity.setId_luogo_pubblicazione_documento_sm(null);
-        }
+        Integer next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO = salva_TF_SM_LUOGO_PUBBLICAZIONE_DOCUMENTO(questionarioModelRequest.getListaTdLuogoPubblicazioneDocumentoEntity(), questionarioModelRequest.getLuogoPubblicazioneDocumentoAltro());
+        tfQuestionarioEntity.setId_luogo_pubblicazione_documento_sm(next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO);
 
         // ANNOTAZIONI_PUBBLICAZIONE_DOC --> Non Obbligatorio
         tfQuestionarioEntity.setAnnotazioni_pubblicazione_doc(questionarioModelRequest.getAnnotazioniPubblicazioneDoc());
@@ -221,11 +142,7 @@ public class DDSService {
         tfQuestionarioEntity.setTelefono_compilante(questionarioModelRequest.getTelefonoCompilante());
 
         // ID_SERVIZIO --> Obbligatorio
-        if(questionarioModelRequest.getTdServizioEntity() != null) {
-            tfQuestionarioEntity.setId_servizio(questionarioModelRequest.getTdServizioEntity().getId_servizio());
-        } else {
-            tfQuestionarioEntity.setId_servizio(null);
-        }
+        tfQuestionarioEntity.setId_servizio(questionarioModelRequest.getTdServizioEntity().getId_servizio());
 
         // ANNOTAZIONI_COMPILANTE_QUESTIONARIO --> Obbligatorio
         tfQuestionarioEntity.setAnnotazioni_compilante_questionario(questionarioModelRequest.getAnnotazioniCompilanteQuestionario());
@@ -265,12 +182,34 @@ public class DDSService {
     /*
         Service tabelle memorizzazione "Selezioni Multiple"
      */
-    private Integer salva_TF_SM_TIPO_DOCUMENTO(List<TdTipoDocumentoEntity> listaTdTipoDocumentoEntity)  {
+    private Integer salva_TF_SM_TIPO_DOCUMENTO(List<TdTipoDocumentoEntity> listaTdTipoDocumentoEntity, String listaTipoDocumentoAltro)  {
 
-        if(listaTdTipoDocumentoEntity == null) {
-            return null;
+        // Se tra i "Tipo Documento" selezionati è presente anche la voce "Altro" ...
+        if (listaTipoDocumentoAltro != null) {
+
+            listaTdTipoDocumentoEntity.removeIf( tdTipoDocumentoEntity -> (tdTipoDocumentoEntity.getId_tipo_documento() == 9999) );
+
+            // Estraggo la lista dei nuovi "Tipo Documento" ...
+            String[] listaTipoDocumentoAltroArray = listaTipoDocumentoAltro.split(";");
+            for (int i = 0; i < listaTipoDocumentoAltroArray.length; i++)
+            {
+                // Rimuovo eventuali caratteri blank presenti all'inizio e/o alla fine del nuovo "Tipo Documento"
+                String tipoDocumentoAltro = listaTipoDocumentoAltroArray[i].strip();
+
+                // Verifico che il la singola nuova voce del "Tipo Documento" non sia una stringa vuota
+                if (!tipoDocumentoAltro.equals("")) {
+                    // Creo la relativa anagrafica ...
+                    TdTipoDocumentoEntity tdTipoDocumentoEntityAltro = anagraficheService.addTipoDocumento(tipoDocumentoAltro);
+
+                    // Aggiungo il nuovo "Tipo Documento" a quelli eventualmente già selezionati(potrebbe essere che l'utente selezioni solo "Tipi Documento" nuovi)
+                    listaTdTipoDocumentoEntity.add(tdTipoDocumentoEntityAltro);
+                }
+
+            }
+
         }
 
+        // Recupero il successivo ID_TIPO_DOCUMENTO_SM della tabella relativa alle selezioni multiple del "Tipo Documento"
         Integer next_ID_TIPO_DOCUMENTO_SM = tfSmTipoDocumentoRepository.getNext_ID_TIPO_DOCUMENTO_SM();
 
         for(TdTipoDocumentoEntity tdTipoDocumentoEntity : listaTdTipoDocumentoEntity) {
@@ -285,28 +224,76 @@ public class DDSService {
 
         return next_ID_TIPO_DOCUMENTO_SM;
     }
-    private Integer salva_TF_SM_APPLICATIVO(List<TdApplicativoEntity> listaTdApplicativoEntity)  {
+    private Integer salva_TF_SM_APPLICATIVO(List<TdApplicativoEntity> listaTdApplicativoEntity, String listaApplicativoAltro)  {
 
-        if(listaTdApplicativoEntity == null) {
-            return null;
+        // Se tra gli "Applicativi" selezionati è presente anche la voce "Altro" ...
+        if (listaApplicativoAltro != null) {
+
+            listaTdApplicativoEntity.removeIf( tdApplicativoEntity -> (tdApplicativoEntity.getId_applicativo() == 99999) );
+
+            // Estraggo la lista dei nuovi "Applicativi" ...
+            String[] listaApplicativoAltroArray = listaApplicativoAltro.split(";");
+            for (int i = 0; i < listaApplicativoAltroArray.length; i++)
+            {
+                // Rimuovo eventuali caratteri blank presenti all'inizio e/o alla fine del nuovo "Applicativo"
+                String applicativoAltro = listaApplicativoAltroArray[i].strip();
+
+                // Verifico che il la singola nuova voce dell'"Applicativo" non sia una stringa vuota
+                if (!applicativoAltro.equals("")) {
+                    // Creo la relativa anagrafica ...
+                    TdApplicativoEntity tdApplicativoEntityAltro = anagraficheService.addApplicativo(applicativoAltro);
+
+                    // Aggiungo il nuovo "Applicativo" a quelli eventualmente già selezionati(potrebbe essere che l'utente selezioni solo "Applicativi" nuovi)
+                    listaTdApplicativoEntity.add(tdApplicativoEntityAltro);
+                }
+
+            }
+
         }
 
+        // Recupero il successivo ID_APPLICATIVO_SM della tabella relativa alle selezioni multiple del "Applicativo"
         Integer next_ID_APPLICATIVO_SM = tfSmApplicativoRepository.getNext_ID_APPLICATIVO_SM();
 
         for(TdApplicativoEntity tdApplicativoEntity : listaTdApplicativoEntity) {
 
-            TfSmApplicativoEntity tfSmTipoDocumentoEntity = new TfSmApplicativoEntity();
+            TfSmApplicativoEntity tfSmApplicativoEntity = new TfSmApplicativoEntity();
 
-            tfSmTipoDocumentoEntity.setId_applicativo_sm(next_ID_APPLICATIVO_SM);
-            tfSmTipoDocumentoEntity.setId_applicativo(tdApplicativoEntity.getId_applicativo());
+            tfSmApplicativoEntity.setId_applicativo_sm(next_ID_APPLICATIVO_SM);
+            tfSmApplicativoEntity.setId_applicativo(tdApplicativoEntity.getId_applicativo());
 
-            tfSmApplicativoRepository.save(tfSmTipoDocumentoEntity);
+            tfSmApplicativoRepository.save(tfSmApplicativoEntity);
         }
 
         return next_ID_APPLICATIVO_SM;
     }
-    private Integer salva_TF_SM_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO(List<TdModoRegistrazioneDocumentoProtocolloEntity> listaTdModoRegistrazioneDocumentoProtocolloEntity)  {
+    private Integer salva_TF_SM_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO(List<TdModoRegistrazioneDocumentoProtocolloEntity> listaTdModoRegistrazioneDocumentoProtocolloEntity, String listaTdModoRegistrazioneDocumentoProtocolloAltro)  {
 
+        // Se tra i "Modi Registrazione Documento Protocollo" selezionati è presente anche la voce "Altro" ...
+        if (listaTdModoRegistrazioneDocumentoProtocolloAltro != null) {
+
+            listaTdModoRegistrazioneDocumentoProtocolloEntity.removeIf( tdModoRegistrazioneDocumentoProtocolloEntity -> (tdModoRegistrazioneDocumentoProtocolloEntity.getId_modo_registrazione_documento_protocollo() == 9999) );
+
+            // Estraggo la lista dei nuovi "Modi Registrazione Documento Protocollo" ...
+            String[] listaModoRegistrazioneDocumentoProtocolloAltroArray = listaTdModoRegistrazioneDocumentoProtocolloAltro.split(";");
+            for (int i = 0; i < listaModoRegistrazioneDocumentoProtocolloAltroArray.length; i++)
+            {
+                // Rimuovo eventuali caratteri blank presenti all'inizio e/o alla fine del nuovo "Modo Registrazione Documento Protocollo"
+                String modoRegistrazioneDocumentoProtocolloAltro = listaModoRegistrazioneDocumentoProtocolloAltroArray[i].strip();
+
+                // Verifico che il la singola nuova voce del "Modi Registrazione Documento Protocollo" non sia una stringa vuota
+                if (!modoRegistrazioneDocumentoProtocolloAltro.equals("")) {
+                    // Creo la relativa anagrafica ...
+                    TdModoRegistrazioneDocumentoProtocolloEntity tdModoRegistrazioneDocumentoProtocolloEntityAltro = anagraficheService.addModoRegistrazioneDocumentoProtocollo(modoRegistrazioneDocumentoProtocolloAltro);
+
+                    // Aggiungo il nuovo "Modo Registrazione Documento Protocollo" a quelli eventualmente già selezionati(potrebbe essere che l'utente selezioni solo "Modi Registrazione Documento Protocollo" nuovi)
+                    listaTdModoRegistrazioneDocumentoProtocolloEntity.add(tdModoRegistrazioneDocumentoProtocolloEntityAltro);
+                }
+
+            }
+
+        }
+
+        // Recupero il successivo ID_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO_SM della tabella relativa alle selezioni multiple del "Modo Registrazione Documento Protocollo"
         Integer next_ID_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO_SM = tfSmModoRegistrazioneDocumentoProtocolloRepository.getNext_ID_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO_SM();
 
         for(TdModoRegistrazioneDocumentoProtocolloEntity tdModoRegistrazioneDocumentoProtocolloEntity : listaTdModoRegistrazioneDocumentoProtocolloEntity) {
@@ -320,22 +307,7 @@ public class DDSService {
         }
 
         return next_ID_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO_SM;
-    }
-    private Integer salva_TF_SM_LUOGO_PUBBLICAZIONE_DOCUMENTO(List<TdLuogoPubblicazioneDocumentoEntity> listaTdLuogoPubblicazioneDocumentoEntity)  {
 
-        Integer next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO_SM = tfSmLuogoPubblicazioneDocumentiRepository.getNext_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO_SM();
-
-        for(TdLuogoPubblicazioneDocumentoEntity tdLuogoPubblicazioneDocumentoEntity : listaTdLuogoPubblicazioneDocumentoEntity) {
-
-            TfSmLuogoPubblicazioneDocumentiEntity tfSmLuogoPubblicazioneDocumentiEntity = new TfSmLuogoPubblicazioneDocumentiEntity();
-
-            tfSmLuogoPubblicazioneDocumentiEntity.setId_luogo_pubblicazione_documento_sm(next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO_SM);
-            tfSmLuogoPubblicazioneDocumentiEntity.setId_luogo_pubblicazione_documento(tdLuogoPubblicazioneDocumentoEntity.getId_luogo_pubblicazione_documento());
-
-            tfSmLuogoPubblicazioneDocumentiRepository.save(tfSmLuogoPubblicazioneDocumentiEntity);
-        }
-
-        return next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO_SM;
     }
     private Integer salva_TF_SM_CRITERIO_ORGANIZZAZIONE_DOCUMENTO(List<TdCriterioOrganizzazioneDocumentoEntity> listaTdCriterioOrganizzazioneDocumentoEntity)  {
 
@@ -368,6 +340,49 @@ public class DDSService {
         }
 
         return next_ID_MODO_ORGANIZZAZIONE_DOCUMENTO_SM;
+    }
+    private Integer salva_TF_SM_LUOGO_PUBBLICAZIONE_DOCUMENTO(List<TdLuogoPubblicazioneDocumentoEntity> listaTdLuogoPubblicazioneDocumentoEntity, String listaTdLuogoPubblicazioneDocumentoAltro)  {
+
+        // Se tra i "Luoghi Pubblicazione Documento" selezionati è presente anche la voce "Altro" ...
+        if (listaTdLuogoPubblicazioneDocumentoAltro != null) {
+
+            listaTdLuogoPubblicazioneDocumentoEntity.removeIf( tdLuogoPubblicazioneDocumentoEntity -> (tdLuogoPubblicazioneDocumentoEntity.getId_luogo_pubblicazione_documento() == 9999) );
+
+            // Estraggo la lista dei nuovi "Luoghi Pubblicazione Documento" ...
+            String[] listaLuogoPubblicazioneDocumentoAltroArray = listaTdLuogoPubblicazioneDocumentoAltro.split(";");
+            for (int i = 0; i < listaLuogoPubblicazioneDocumentoAltroArray.length; i++)
+            {
+                // Rimuovo eventuali caratteri blank presenti all'inizio e/o alla fine del nuovo "Luogo Pubblicazione Documento"
+                String luogoPubblicazioneDocumentoProtocolloAltro = listaLuogoPubblicazioneDocumentoAltroArray[i].strip();
+
+                // Verifico che il la singola nuova voce del "Luoghi Pubblicazione Documento" non sia una stringa vuota
+                if (!luogoPubblicazioneDocumentoProtocolloAltro.equals("")) {
+                    // Creo la relativa anagrafica ...
+                    TdLuogoPubblicazioneDocumentoEntity tdLuogoPubblicazioneDocumentoEntityAltro = anagraficheService.addLuogoPubblicazioneDocumenti(luogoPubblicazioneDocumentoProtocolloAltro);
+
+                    // Aggiungo il nuovo "Luoghi Pubblicazione Documento" a quelli eventualmente già selezionati(potrebbe essere che l'utente selezioni solo "Modi Registrazione Documento Protocollo" nuovi)
+                    listaTdLuogoPubblicazioneDocumentoEntity.add(tdLuogoPubblicazioneDocumentoEntityAltro);
+                }
+
+            }
+
+        }
+
+        // Recupero il successivo next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO della tabella relativa alle selezioni multiple del "Luogo Pubblicazione Documento"
+        Integer next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO = tfSmLuogoPubblicazioneDocumentiRepository.getNext_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO_SM();
+
+        for(TdLuogoPubblicazioneDocumentoEntity tdLuogoPubblicazioneDocumentoEntity : listaTdLuogoPubblicazioneDocumentoEntity) {
+
+            TfSmLuogoPubblicazioneDocumentiEntity tfSmLuogoPubblicazioneDocumentiEntity = new TfSmLuogoPubblicazioneDocumentiEntity();
+
+            tfSmLuogoPubblicazioneDocumentiEntity.setId_luogo_pubblicazione_documento_sm(next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO);
+            tfSmLuogoPubblicazioneDocumentiEntity.setId_luogo_pubblicazione_documento(tdLuogoPubblicazioneDocumentoEntity.getId_luogo_pubblicazione_documento());
+
+            tfSmLuogoPubblicazioneDocumentiRepository.save(tfSmLuogoPubblicazioneDocumentiEntity);
+        }
+
+        return next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO;
+
     }
 
 }
