@@ -51,7 +51,7 @@ public class AuthenticationConfiguration {
 
                 .authorizeHttpRequests((authorize) -> authorize
 
-                        .requestMatchers("/authentication/login").permitAll()
+                        .requestMatchers("/authentication/login", "/authentication/changePasswordAccount").permitAll()
                         .anyRequest().authenticated()
                         //.anyRequest().permitAll()
 
