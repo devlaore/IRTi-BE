@@ -18,6 +18,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 //import it.laore.JWTAuth.service.jwt.JWTService;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -27,6 +31,23 @@ public class AuthenticationService {
     private final JWTService jwtService;
     private final AuthenticationManager AuthenticationManager;
 
+
+    /******************************************************************************************
+     *  Queries/Statements on TABLE account
+     *****************************************************************************************/
+    public List<AccountEntity> getLista_ACCOUNT() {
+        /*
+            Ritorna la lista di tutti gli account
+         */
+        Optional<List<AccountEntity>> op_ListaAccountEntity;
+        List<AccountEntity> listaAccountEntity;
+
+        op_ListaAccountEntity = accountRepository.getLista_ACCOUNT();
+
+        listaAccountEntity = op_ListaAccountEntity.orElseGet(ArrayList::new);
+
+        return listaAccountEntity;
+    }
     public AccountEntity get_ACCOUNT_By_MATRICOLA(String matricola) {
 
         AccountEntity accountEntity = accountRepository.get_ACCOUNT_By_MATRICOLA(matricola)

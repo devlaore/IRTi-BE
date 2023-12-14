@@ -9,12 +9,27 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/authentication")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
+
+    /******************************************************************************************
+     *  Endpoints on TABLE account
+     *****************************************************************************************/
+    @GetMapping("/getLista_ACCOUNT") // Postman request: "getLista_TD_EVENTO_TESTATA_By_ID_BANDO"
+    public ResponseEntity<List<AccountEntity>> getLista_ACCOUNT() {
+
+        List<AccountEntity> listaAccountEntity = authenticationService.getLista_ACCOUNT();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(listaAccountEntity);
+    }
     @GetMapping("/get_ACCOUNT_By_MATRICOLA")
     public ResponseEntity<AccountEntity> get_ACCOUNT_By_MATRICOLA(@RequestParam String matricola) {
 
@@ -24,6 +39,7 @@ public class AuthenticationController {
                 .status(HttpStatus.OK)
                 .body(accountEntity);
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<JWTAuthenticationResponse> login(@RequestBody AccountEntity accountRequest) {

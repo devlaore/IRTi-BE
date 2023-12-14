@@ -11,6 +11,9 @@ import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<AccountEntity, String> {
 
+    @Query(value = "SELECT * from public.account", nativeQuery = true)
+    Optional<List<AccountEntity>> getLista_ACCOUNT();
+
     @Query(value = "SELECT * from public.account WHERE matricola = :matricola", nativeQuery = true)
     Optional<AccountEntity> get_ACCOUNT_By_MATRICOLA(@Param("matricola") String matricola);
 
