@@ -251,6 +251,11 @@ public class DDSService {
 
         }
 
+        // Verifico se la lista degli "Applicativo" è vuota(caso in cui il flag_applicativo <> 'No'"
+        if (listaTdApplicativoEntity == null) {
+            return null;
+        }
+
         // Recupero il successivo ID_APPLICATIVO_SM della tabella relativa alle selezioni multiple del "Applicativo"
         Integer next_ID_APPLICATIVO_SM = tfSmApplicativoRepository.getNext_ID_APPLICATIVO_SM();
 
@@ -291,6 +296,11 @@ public class DDSService {
 
             }
 
+        }
+
+        // Verifico se la lista dei "Modi Registrazione Documento Protocollo" è vuota(caso in cui il flag_modo_registrazione_documento_protocollo <> 'in parte ...'"
+        if (listaTdModoRegistrazioneDocumentoProtocolloEntity == null) {
+            return null;
         }
 
         // Recupero il successivo ID_MODO_REGISTRAZIONE_DOCUMENTO_PROTOCOLLO_SM della tabella relativa alle selezioni multiple del "Modo Registrazione Documento Protocollo"
@@ -366,6 +376,11 @@ public class DDSService {
 
             }
 
+        }
+
+        // Verifico se la lista dei "Luoghi Pubblicazione Documento" è vuota(caso in cui il flag_luogo_pubblicazione_documento <> 'No'"
+        if (listaTdLuogoPubblicazioneDocumentoEntity == null) {
+            return null;
         }
 
         // Recupero il successivo next_ID_LUOGO_PUBBLICAZIONE_DOCUMENTO della tabella relativa alle selezioni multiple del "Luogo Pubblicazione Documento"
