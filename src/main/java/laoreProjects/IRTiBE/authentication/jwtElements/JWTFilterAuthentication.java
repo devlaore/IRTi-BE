@@ -2,12 +2,7 @@ package laoreProjects.IRTiBE.authentication.jwtElements;
 
 import java.io.IOException;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +21,7 @@ public class JWTFilterAuthentication extends OncePerRequestFilter {
     @Autowired
     private JWTService jwtService;
     @Autowired
-    private JWTUserDetailsManager authUserDetailsManager;
+    private JWTUserDetailsManager jwtUserDetailsManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -45,7 +40,7 @@ public class JWTFilterAuthentication extends OncePerRequestFilter {
         username = jwtService.extractUsername(token);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = authUserDetailsManager.loadUserByUsername(username);
+            UserDetails userDetails = jwtUserDetailsManager.loadUserByUsername(username);
             if (jwtService.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

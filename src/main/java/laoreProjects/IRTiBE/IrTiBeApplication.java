@@ -2,13 +2,16 @@ package laoreProjects.IRTiBE;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
+//public class IrTiBeApplication  extends SpringBootServletInitializer {		// DECOMMENTARE per doploy in server produzione
 public class IrTiBeApplication {
-
+//
 	public static void main(String[] args) {
 		SpringApplication.run(IrTiBeApplication.class, args);
 	}
@@ -37,14 +40,12 @@ public class IrTiBeApplication {
 		};
 	}
 
-//	@Bean
-//	public WebMvcConfigurer corsConfigurer() {
-//		return new WebMvcConfigurer() {
-//			@Override
-//			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("/*").allowedOrigins("http://localhost:4200").allowedMethods("PUT", "DELETE", "GET", "POST", "OPTIONS")
-//						.exposedHeaders("Authorization");
-//			}
-//		};
-//	}
+
+	/*
+		DECOMMENTARE per doploy in server produzione
+	 */
+/*	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(IrTiBeApplication.class);
+	}*/
 }
