@@ -23,7 +23,6 @@ public class VQuestionarioEntity {
     private String nome_attivita;
     private String nome_ambito_attivita;
     private String nome_macro_attivita;
-    private String nome_specializzazione_attivita;
     private String lista_nome_tipo_documento;
     private String flag_applicativo;
     private String lista_nome_applicativo;
