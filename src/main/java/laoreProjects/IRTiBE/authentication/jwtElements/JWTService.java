@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +26,13 @@ public class JWTService {
 
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    public String extractIdSessione(String token) {
+        String idSession;
+        idSession = extractClaim(token, claims -> claims.get("idSessione", String.class));
+
+        return idSession;
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -53,8 +58,9 @@ public class JWTService {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    public String generateToken(String userName){
+    public String generateToken(String userName, Integer idSessione){
         Map<String,Object> claims = new HashMap<>();
+        claims.put("idSessione", idSessione);
         return createToken(claims,userName);
     }
 

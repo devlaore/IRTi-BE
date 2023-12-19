@@ -14,9 +14,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class JWTAuthenticationResponse {
 
+    private Integer idSessione;
     private AccountEntity account;
     @JsonProperty("access_token")
     private String accessToken;
-//	  @JsonProperty("refresh_token")
+
+
+    //	  @JsonProperty("refresh_token")
 //	  private String refreshToken;
 }

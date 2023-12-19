@@ -2,7 +2,11 @@ package laoreProjects.IRTiBE.authentication.jwtElements;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import io.jsonwebtoken.ExpiredJwtException;
+import laoreProjects.IRTiBE.service.LogService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,12 +20,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
+@RequiredArgsConstructor
 public class JWTFilterAuthentication extends OncePerRequestFilter {
 
-    @Autowired
-    private JWTService jwtService;
-    @Autowired
-    private JWTUserDetailsManager jwtUserDetailsManager;
+    private final LogService logService;
+    private final JWTService jwtService;
+    private final JWTUserDetailsManager jwtUserDetailsManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -37,19 +41,30 @@ public class JWTFilterAuthentication extends OncePerRequestFilter {
         }
 
         token = authHeader.substring(7);
-        username = jwtService.extractUsername(token);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = jwtUserDetailsManager.loadUserByUsername(username);
-            if (jwtService.validateToken(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+        try {
+            username = jwtService.extractUsername(token);
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = jwtUserDetailsManager.loadUserByUsername(username);
+
+                if (jwtService.validateToken(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+
             }
+
+            filterChain.doFilter(request, response);
+
+        } catch (ExpiredJwtException e) {
+            DecodedJWT decodedJWT = JWT.decode(token);
+
+            Integer idSession = decodedJWT.getClaim("idSessione").asInt();
+            logService.log_SessionLogout(Integer.valueOf(idSession));
+
         }
-
-        filterChain.doFilter(request, response);
-
     }
 
 }

@@ -1,13 +1,16 @@
 package laoreProjects.IRTiBE.authentication.controller;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import laoreProjects.IRTiBE.authentication.entity.AccountEntity;
 import laoreProjects.IRTiBE.authentication.jwtElements.JWTAuthenticationResponse;
 import laoreProjects.IRTiBE.authentication.service.AuthenticationService;
+import laoreProjects.IRTiBE.service.LogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -16,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    private final LogService logService;
 
 
     /******************************************************************************************
@@ -30,20 +34,16 @@ public class AuthenticationController {
                 .status(HttpStatus.OK)
                 .body(listaAccountEntity);
     }
-    @GetMapping("/get_ACCOUNT_By_MATRICOLA")
-    public ResponseEntity<AccountEntity> get_ACCOUNT_By_MATRICOLA(@RequestParam String matricola) {
-
-        AccountEntity accountEntity = authenticationService.get_ACCOUNT_By_MATRICOLA(matricola);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(accountEntity);
-    }
-
 
     @PostMapping("/login")
     public ResponseEntity<JWTAuthenticationResponse> login(@RequestBody AccountEntity accountRequest) {
         return ResponseEntity.ok(authenticationService.login(accountRequest));
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(@RequestParam Integer idSessione) {
+            return ResponseEntity.ok(authenticationService.logout(idSessione));
+
     }
 
     @PostMapping("/createAccount")

@@ -4,18 +4,12 @@ import laoreProjects.IRTiBE.authentication.entity.AccountEntity;
 import laoreProjects.IRTiBE.authentication.jwtElements.JWTAuthenticationResponse;
 import laoreProjects.IRTiBE.authentication.jwtElements.JWTService;
 import laoreProjects.IRTiBE.authentication.repository.AccountRepository;
+import laoreProjects.IRTiBE.service.LogService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-
-//import it.laore.JWTAuth.controller.authentication.AuthenticationResponse;
-//import it.laore.JWTAuth.controller.authentication.LoginRequest;
-//import it.laore.JWTAuth.controller.manageUser.UserRequest;
-//import it.laore.JWTAuth.entity.UserEntity;
-//import it.laore.JWTAuth.repository.JWTRepository;
-//import it.laore.JWTAuth.service.jwt.JWTService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -29,6 +23,7 @@ public class AuthenticationService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final JWTService jwtService;
+    private final LogService logService;
     private final AuthenticationManager AuthenticationManager;
 
 
@@ -48,13 +43,6 @@ public class AuthenticationService {
 
         return listaAccountEntity;
     }
-    public AccountEntity get_ACCOUNT_By_MATRICOLA(String matricola) {
-
-        AccountEntity accountEntity = accountRepository.get_ACCOUNT_By_MATRICOLA(matricola)
-                .orElseThrow();
-
-        return accountEntity;
-    }
 
     public JWTAuthenticationResponse login(AccountEntity accountRequest) {
 
@@ -64,14 +52,28 @@ public class AuthenticationService {
         AccountEntity accountEntity = accountRepository.get_ACCOUNT_By_MATRICOLA(accountRequest.getMatricola())
                 .orElseThrow();
 
-        String token = jwtService.generateToken(accountEntity.getMatricola());
+        //  Loggo il login della sessione
+        Integer idSessione = logService.log_SessionLogin(accountRequest.getMatricola());
+
+        //  Genero il token
+        String token = jwtService.generateToken(accountEntity.getMatricola(), idSessione);
 
         return JWTAuthenticationResponse
                 .builder()
+                .idSessione(idSessione)
                 .account(accountEntity)
                 .accessToken(token)
                 .build();
     }
+
+    public String logout(Integer idSessione) {
+
+        //  Loggo il logout della sessione
+        logService.log_SessionLogout(idSessione);
+
+        return "Logout sessione";
+    }
+
 
     public JWTAuthenticationResponse createAccount(AccountEntity accountRequest) {
         AccountEntity accountEntity = AccountEntity.builder()
@@ -80,13 +82,13 @@ public class AuthenticationService {
                 //.roles(createUserRequest.getRole())
                 .build();
 
-        String token = jwtService.generateToken(accountRequest.getMatricola());
+        //String token = jwtService.generateToken(accountRequest.getMatricola());
 
         accountRepository.save(accountEntity);
 
         return JWTAuthenticationResponse
                 .builder()
-                .accessToken(token)
+                //.accessToken(token)
                 .build();
     }
 
