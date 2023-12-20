@@ -69,7 +69,7 @@ public class JWTService {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1000 * 60 * 30 = 3600000 millisecondi ==> 60 minuti
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1000 * 60 * 180 = 3600000 millisecondi ==> 180 minuti/3 ore
                 //.setExpiration(new Date(System.currentTimeMillis() + 1000 * 10 * 1)) // 1000 * 10 * 1 = 10000 millisecondi ==> 10 secondi (test per token expired)
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
