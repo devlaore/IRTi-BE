@@ -23,5 +23,6 @@ public class LogSessioneEntity {
     private String matricola;
     private LocalDateTime timestamp_login;
     private LocalDateTime timestamp_logout;
+    private String causa_logout;
 
 }

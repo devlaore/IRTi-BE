@@ -62,7 +62,7 @@ public class JWTFilterAuthentication extends OncePerRequestFilter {
             DecodedJWT decodedJWT = JWT.decode(token);
 
             Integer idSession = decodedJWT.getClaim("idSessione").asInt();
-            logService.log_SessionLogout(Integer.valueOf(idSession));
+            logService.log_SessionLogout(Integer.valueOf(idSession), "SESSIONE SCADUTA");
 
         }
     }

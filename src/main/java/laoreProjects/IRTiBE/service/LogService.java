@@ -34,7 +34,7 @@ public class LogService {
 
         return newLogSessioneEntity.getId_sessione();
     }
-    public void log_SessionLogout(Integer idSessione) {
+    public void log_SessionLogout(Integer idSessione, String causaLogout) {
 
         LogSessioneEntity logSessioneEntity;
 
@@ -43,6 +43,7 @@ public class LogService {
         if(op_LogSessioneEntity.isPresent()) {
             logSessioneEntity = op_LogSessioneEntity.get();
             logSessioneEntity.setTimestamp_logout(LocalDateTime.now());
+            logSessioneEntity.setCausa_logout(causaLogout);
             logSessioneRepository.save(logSessioneEntity);
         }
 

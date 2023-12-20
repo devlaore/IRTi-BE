@@ -76,7 +76,7 @@ public class AuthenticationService {
     public String logout(Integer idSessione) {
 
         //  Loggo il logout della sessione
-        logService.log_SessionLogout(idSessione);
+        logService.log_SessionLogout(idSessione, "LOGOUT");
 
         return "Logout sessione";
     }
