@@ -43,6 +43,13 @@ public class AuthenticationService {
 
         return listaAccountEntity;
     }
+    public AccountEntity get_ACCOUNT_By_MATRICOLA(String matricola) {
+
+        AccountEntity accountEntity = accountRepository.get_ACCOUNT_By_MATRICOLA(matricola)
+                .orElseThrow();
+
+        return accountEntity;
+    }
 
     public JWTAuthenticationResponse login(AccountEntity accountRequest) {
 

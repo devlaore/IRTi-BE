@@ -34,6 +34,15 @@ public class AuthenticationController {
                 .status(HttpStatus.OK)
                 .body(listaAccountEntity);
     }
+    @GetMapping("/get_ACCOUNT_By_MATRICOLA")
+    public ResponseEntity<AccountEntity> get_ACCOUNT_By_MATRICOLA(@RequestParam String matricola) {
+
+        AccountEntity accountEntity = authenticationService.get_ACCOUNT_By_MATRICOLA(matricola);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountEntity);
+    }
 
     @PostMapping("/login")
     public ResponseEntity<JWTAuthenticationResponse> login(@RequestBody AccountEntity accountRequest) {
